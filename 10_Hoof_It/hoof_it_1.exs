@@ -3,16 +3,12 @@
 Mix.install([:arrays])
 
 defmodule Solution do
-  # Magic number -- char
-  # code before 0, ?/
-  @start 47
-
   def solution(map) do
     last = Arrays.size(map) - 1
 
     for y <- 0..last, x <- 0..last do
       if map[y][x] == ?0 do
-        dfs(map, x, y, @start)
+        dfs(map, x, y)
         |> Enum.uniq()
         |> Enum.count()
       else
@@ -22,7 +18,7 @@ defmodule Solution do
     |> Enum.sum()
   end
 
-  def dfs(map, cur_x, cur_y, _prev) do
+  def dfs(map, cur_x, cur_y) do
     size = Arrays.size(map)
 
     cond do
@@ -48,7 +44,7 @@ defmodule Solution do
           map[y][x] - map[cur_y][cur_x] == 1
         end)
         |> Enum.map(fn {x, y} ->
-          dfs(map, x, y, map[cur_y][cur_x])
+          dfs(map, x, y)
         end)
         |> List.flatten()
     end
